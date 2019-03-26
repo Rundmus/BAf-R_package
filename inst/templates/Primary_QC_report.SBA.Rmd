@@ -1,0 +1,452 @@
+---
+title: "{{{ title }}}"
+author: "{{{ author }}}"
+date: "{{{ date }}}"
+output: 
+  html_document:
+    fig_width: 12
+    fig_height: 7
+params:
+  baf: ""
+  bead_count: ""
+  color_tbl_b: ""
+  color_tbl_s: ""
+  lowbound_mfi: ""
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+
+library(BAf)
+
+baf <- params$baf
+color_tbl_s <- params$color_tbl_s
+color_tbl_b <- params$color_tbl_b
+lowbound_mfi <- params$lowbound_mfi
+# color_tbl_b <- default_color_SBA_bead(T)
+# color_tbl_s <- default_color_SBA_ctrl_samples(sid(baf))
+# lowbound_mfi <- 100    # SBA
+
+zeros_per_sample <- apply(sX(baf), 1, . %>% {sum(. == 0)})
+zeros_per_bead   <- apply(sX(baf), 2, . %>% {sum(. == 0)})
+
+baf <- replace_0(baf, 1, F)
+
+warn <- function(text, col= "red") {
+  cat('  <li style="color:', col, ';">', text, "</li>\n")
+}
+
+if_warn <- function(cond, yes, no = NULL, col= "red") {
+  if(cond) warn(yes, col) 
+  else if(!is.null(no)) cat('  <li>', no, "</li>\n")
+  return(invisible(cond))
+}
+
+if_any_warn <- function(cond,
+                        yes,
+                        no = NULL,
+                        var = names(cond),
+                        col = "red",
+                        order = seq_along(cond), 
+                        decreasing = FALSE) {
+  cond <- !is.na(cond) & cond         # ignore NA
+  if(any(cond) && !is.null(var)) {
+    var <- sub("\\*", "\\\\*", var)  # '*' in Rmd is the mark for italic
+    ##  add a list of the variables
+    n_list <- 10
+    yes <- var[cond] %>% 
+      .[order(order[cond], na.last= F, decreasing= decreasing)] %>% {
+      if(sum(cond) > n_list) {
+        c(.[1:n_list], paste("and", sum(cond) - n_list, "more")) 
+      } else . 
+    } %>% 
+      paste(., collapse= ", ") %>% 
+      c(yes, ' [', ., '].')
+  }
+  if_warn(any(cond), yes, no)
+  return(invisible(cond))
+}
+
+ctrl_ab <- color_tbl_b %>% 
+  dplyr::filter(type %in% c("negative", "positive")) %>% 
+  mutate(ind = lapply(reg, grep, BAf:::.fit_to_std_format(bid(baf))))
+
+# = is control antibody?
+is_ctrl_ab <- ctrl_ab$ind %>% 
+  unlist() %>% 
+  `[<-`(logical(ncol(baf)), ., T)       # unwhich
+
+```
+
+Bead Counts
+-----------
+
+```{r Bead count, fig.height= 13}
+if(is.null(params$bead_count) || params$bead_count == "") {
+  cat("Bead count data was not provided.\n")
+} else {
+  plot_QC_bead_count_boxplot(
+    params$bead_count,
+    color_tbl_b = color_tbl_b,
+    color_tbl_s = color_tbl_s,
+    main= paste(unique(batch(baf, "binder")), collapse= ", ")
+  )
+}
+```
+
+
+<br />
+
+Samples
+-------
+
+### Signal distribution across samples
+
+```{r Sample plot}
+plot_QC_sample_signal_boxplot.SBA(baf)
+```
+
+<ul>
+```{r Sample chq, results= 'asis'}
+
+## * Check * ##
+if_any_warn(
+  cond= zeros_per_sample > 0.1 * nrow(baf), 
+  yes = 'There are some samples with too many zeros (>10%)',
+  no  = 'Frequency of zeros per sample was ≤10%.',
+  var = sid(baf)
+)
+
+# = is negative control sample?
+is_neg_s <- color_tbl_s %>% 
+  dplyr::filter(type == "negative") %>% 
+  transmute(i = lapply(reg, grep, BAf:::.fit_to_std_format(sid(baf)))) %>% 
+  unlist() %>% 
+  `[<-`(logical(nrow(baf)), ., T)       # unwhich
+
+m_s <- apply(sX(baf), 1, median)
+d_s <- apply(sX(baf), 1, mad)
+
+## * Check * ##
+if_any_warn(
+  m_s[!is_neg_s] < lowbound_mfi, 
+  paste0("Signals were too low (median < ", lowbound_mfi, ")")
+)
+
+if(any(is_neg_s)) {
+  ## * Check * ##
+  is_neg_s[is_neg_s] <- if_any_warn(
+    m_s[is_neg_s] > 300 | m_s[is_neg_s] < 30, 
+    "Signals of negative controls were too high or too low (median >300 or <30)"
+  ) %>%  
+    `[<-`(is_neg_s[is_neg_s], ., NA)       # exclude weird negative controls
+
+  ## * Check * ##
+  if(any(!is.na(is_neg_s) & is_neg_s)) {
+    threshold <- median(m_s[is_neg_s], na.rm= T) + 3* median(d_s[is_neg_s], na.rm= T)
+    
+    if_any_warn(
+      m_s[!is_neg_s] > lowbound_mfi & m_s[!is_neg_s] < threshold,
+      "Too low signals comparing to negative controls (median + 3 * MAD)",
+      "Signals were enough higher than negative controls."
+    )
+  }
+} else {
+  warn("No negative control sample was identified.")  
+}
+
+cat("</ul>\n")
+
+baf <- baf[!is.na(is_neg_s) & !is_neg_s & !is.na(m_s) & m_s >= lowbound_mfi, ]
+
+if(nrow(baf) == 0) {
+  stop(paste0("The signals of all samples were below ", lowbound_mfi, "!"))
+}
+
+cat("<br />\n", '<h5 style="color:green;">NOTE: ', 
+    'From this point in this report, ', 
+    'the data of negative control samples and too-low signal (MFI<', 
+    lowbound_mfi, ') samples are excluded. ',
+    "</h5>\n", sep= "")
+
+cat("<ul>\n")
+
+cat("The number of remaining samples =", nrow(baf), "\n")
+
+#  batch effect
+if(unique(batch(baf, "sample")) %>% length() > 1) {
+  k_test_b_s <- sapply(bid(baf, exact= T)[! is_ctrl_ab], . %>% {
+    kruskal.test(sX(baf)[, .] ~ factor(batch(baf, "sample")))$p.value
+  })
+  
+  ## * Check * ##
+  if_any_warn(
+    cond= k_test_b_s < 0.05 / length(k_test_b_s),
+    yes = 'Significant sample batch effects in these antibodies',
+    no  = 'Sample batch effects were limited.',
+    order = k_test_b_s
+  )
+}
+
+
+cat("<br />Assuming the samples are in the loading order per plate,\n")
+
+#  linear trend
+lm_test_s <- sapply(bid(baf, exact= T)[! is_ctrl_ab], . %>% {
+  b_s_f <- factor(batch(baf, "sample"))
+  if(nlevels(b_s_f) == 1) {
+    lm(sX(baf)[, .] ~ seq_len(nrow(baf))) %>% 
+      summary() %>% {
+        sign(coef(.)[2, 1]) * coef(.)[2, 4]
+      }
+  } else {
+    lm(sX(baf)[, .] ~ seq_len(nrow(baf)) + factor(batch(baf, "sample"))) %>% 
+      summary() %>% {
+        sign(coef(.)[2, 1]) * coef(.)[2, 4]
+      }
+  }
+})
+
+## * Check * ##
+if(binom.test(sum(sign(lm_test_s) == -1), length(lm_test_s))$p.value < 0.05) {
+  if_warn(sum(sign(lm_test_s) == -1) > 0.5 * length(lm_test_s),
+          yes= "Gradual deterioration of signal in general was observed.",
+          no = "Gradual increase of signal in general was observed.")
+} else {
+  if_warn(T, yes= "No obvious gradual transition of signal", no= "")
+}
+
+## * Check * ##
+if_any_warn(
+  cond= lm_test_s < 0.05 / length(lm_test_s),
+  yes = c('Linear trends of signal changes through assay reading were observed', 
+          'for these antibodies '),
+  no  = 'Linear trends of signal in assay reading order were not biased.',
+  order = lm_test_s
+)
+```
+</ul>
+
+### Variation of replicated samples
+```{r Repl, results= 'asis'}
+
+repl <- color_tbl_s %>%
+  # fix when the replicates are removed due to too low signal
+  dplyr::filter(
+    map_lgl(reg, . %>% 
+              grepl(., BAf:::.fit_to_std_format(sid(baf))) %>% 
+              any)
+    ) %>%
+  dplyr::filter(type == "replicated") %>% 
+  mutate(i = lapply(reg, grep, BAf:::.fit_to_std_format(sid(baf)))) %>% 
+  select(name, i, col)
+if(!is.null(repl) && nrow(repl) > 0) {
+  for(ii in 1:nrow(repl)) {
+    repl_var <- plot_QC_repl_var(
+      baf= baf[, !is_ctrl_ab], 
+      i_repl= repl$i[[ii]],
+      by_s = batch_colname(baf, "sample"),
+      varFUN = function(x) { sd(x, na.rm = T) / mean(x, na.rm = T) },
+      xlab = "Coef. of var.",
+      main= repl$name[ii]
+    )
+    if(ii == 1) {
+      cat("Solid lines show the distribution of variation statistics of", 
+          "replicated samples, while dashed lines are it of all the others.\n")
+    }
+    cat("<ul>\n")
+    
+    ## * Check * ##
+    if_warn(
+      cond= median(repl_var$repl$All) > 0.10,
+      yes = c('The median variation between replicates across batches was', 
+              ' somewhat large (>10%).'),
+      no  = 'The median variation between replicates across batches was ≤10%.'
+    )
+    
+    if(ncol(repl_var$repl) > 1) {
+      ## * Check * ##
+      if_any_warn(
+        cond= repl_var$repl[, -1, drop= F] %>% apply(2, median) > 0.10, 
+        yes = c('The variation between replicates within a batch was', 
+                ' somewhat large (>10%).'),
+        no  = 'The variation between replicates within a batch was ≤10%.'
+      )
+    }
+    
+    cat("  <li>The variation between other samples was",
+        round(median(repl_var$others$All), 2) * 100, "%.</li>\n")
+    
+    cat("</ul>\n")
+  }
+} else {
+  cat("No replicated samples was found.")
+}
+```
+
+
+###  Principal component analysis
+
+```{r PCA sample, fig.height= 12}
+
+if(nrow(baf) > 30) {
+  if(!is.null(repl) && nrow(repl) > 0) {
+    baf_rpl_col <- baf[, !is_ctrl_ab]
+    sI(baf_rpl_col)$col_by <- "1"
+    sI(baf_rpl_col)$col <- par()$fg
+    for(ii in 1:nrow(repl)) {
+      sI(baf_rpl_col)$col_by[repl$i[[ii]]] <- repl$name[ii]
+      sI(baf_rpl_col)$col[repl$i[[ii]]] <- repl$col[ii]
+    }
+    sI(baf_rpl_col)$col_by <- sI(baf_rpl_col)$col_by %>% factor()
+    
+    plot_PC(sX(log(baf_rpl_col)), 
+            col= sI(baf_rpl_col)$col,
+            pch= if_else(sI(baf_rpl_col)$col_by == "1", 21, 19),
+            main= "Replicated samples")
+    legend("topright", legend= repl$name, text.col= repl$col, bty = "n")
+  }
+  
+  plot_PC(log(baf[, !is_ctrl_ab]), 
+          col_by= batch_colname(baf), pch= 21,
+          main= "Sample batches")
+} else {
+  cat("NO PCA plot due to too small number of samples")
+}
+
+```
+
+###   tSNE plots
+
+```{r tSNE sample, fig.height= 12}
+
+if(nrow(baf) > 30) {
+  tsne <- Rtsne(log(sX(baf[, !is_ctrl_ab])), perplexity= 10)
+  
+  if(!is.null(repl) && nrow(repl) > 0) {
+    plot(tsne$Y,
+         col = sI(baf_rpl_col)$col,
+         pch = if_else(sI(baf_rpl_col)$col_by == "1", 21, 19),
+         xlab = "1st representation", ylab= "2nd representation",
+         main= "Replicated samples"
+    )
+    legend("topright", legend= repl$name, text.col= repl$col, bty = "n")
+  }
+  plot(tsne$Y, col= factor(batch(baf)),
+       pch= 21,
+       xlab = "1st representation", ylab= "2nd representation",
+       main= "Sample batches"
+  )
+} else {
+  cat("Too small number of samples")
+}
+
+```
+
+
+<br />
+
+Binders
+-------
+
+### Signal distribution across binders
+```{r Binder signal}
+i_sorted <- baf %>% 
+  sX() %>% 
+  apply(2, median) %>% 
+  order(decreasing= T)
+
+plot_QC_binder_signal_boxplot.SBA(baf[, i_sorted])
+```
+
+
+
+
+
+```{r Binder chq, results= 'asis'}
+
+cat("<ul>\n")
+
+## * Check * ##
+if_any_warn(
+  cond= zeros_per_bead > 0.1 * ncol(baf), 
+  yes = 'Antibodies with too many zeros (>10%)',
+  no  = 'Frequency of zeros per antibody is checked (≤10%).',
+  var = bid(baf)
+)
+
+cAb_type <- ctrl_ab %>% 
+  group_by(type) %>% 
+  summarise(ind = unlist(ind) %>% list()) %>% 
+  mutate(lth = map_int(ind, length)) %>% 
+  dplyr::filter(lth > 0)
+
+m_b <- apply(sX(baf), 2, median)
+
+## * Check * signal range of positive or negative control antibodies ##
+if(nrow(cAb_type) == 0) {
+  if_warn(T, "No control antibody was identified.", "")  
+} else {
+  type <- "negative"
+  if(type %in% cAb_type$type) {
+    i_b <- cAb_type$ind[cAb_type$type == type][[1]]
+    ca_text <- c(type, 'control antibodies')
+    if_any_warn(
+      cond= m_b[i_b] > quantile(m_b[!is_ctrl_ab], 0.1), 
+      yes= c('Signals of', ca_text, 'was fairly high (above 10% quantile)'),
+      no = c('Median signals of', ca_text, 'were fairly low', 
+             ' (below 10% quantile).')
+    )
+  }
+  
+  type <- "positive"
+  if(type %in% cAb_type$type) {
+    i_b <- cAb_type$ind[cAb_type$type == type][[1]]
+    ca_text <- c(type, 'control antibodies')
+    if_any_warn(
+      cond= m_b[i_b] < quantile(m_b[!is_ctrl_ab], 0.9), 
+      yes= c('Too low signals of', ca_text, '(below 90% quantile)'),
+      no = c('Median signals of', ca_text, 'were fairly high', 
+             ' (above 90% quantile).')
+    )
+  }
+}
+
+
+
+cat("</ul>\n")
+```
+
+
+### The distribution of Spearman correlation with control antibodies
+
+```{r, results= 'asis'}
+cAb <- ctrl_ab %>% 
+  dplyr::filter(sapply(ind, function(x) length(x) > 0)) %>% {
+    lapply(seq_len(nrow(.)), function(i) {
+      tibble(ind = .$ind[[i]], 
+             col  = rep(.$col[i],  length(.$ind[[i]])),
+             name = rep(.$name[i], length(.$ind[[i]]))
+      )
+    })
+  } %>% 
+  do.call("rbind", .)
+
+for(ii in seq_len(nrow(cAb))) {
+  corr <- plot_QC_binder_corr_hist(
+    baf, 
+    b_id= cAb$ind[ii], 
+    incl= !is_ctrl_ab,
+    xlab= paste("Corr. with", cAb$name[ii]),
+    col.main= cAb$col[ii]
+  )$corr
+  if_any_warn(
+    cond= corr > 0.7,
+    yes = c("One or more antibodies had high (>0.7) correlation with ", 
+            cAb$name[ii]),
+    no  = c("No antibody had >0.7 correlation with", cAb$name[ii]),
+    order = corr,
+    decreasing= T
+  )
+}
+```
