@@ -4,8 +4,13 @@
 \alias{replace_0}
 \title{replace 0 with given value}
 \usage{
-replace_0(baf, value = min(sX(baf)[sX(baf) > 1], na.rm = TRUE) - 1,
-  show_count = TRUE, by_s = NULL, by_b = NULL)
+replace_0(
+  baf,
+  value = min(sX(baf)[sX(baf) > 1], na.rm = TRUE) - 1,
+  show_count = TRUE,
+  by_s = NULL,
+  by_b = NULL
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

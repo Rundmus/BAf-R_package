@@ -4,11 +4,17 @@
 \alias{plot_QC_bead_count_boxplot}
 \title{Bead count plot}
 \usage{
-plot_QC_bead_count_boxplot(bead_count, sample_order = NULL,
+plot_QC_bead_count_boxplot(
+  bead_count,
+  sample_order = NULL,
   color_tbl_b = default_color_SBA_bead(T),
   color_tbl_s = default_color_SBA_ctrl_samples(sampleid),
-  main = deparse(substitute(bead_count)), xlab = c("Beads",
-  "Sample (sorted)"), ylab = "Bead count", ylim, ...)
+  main = deparse(substitute(bead_count)),
+  xlab = c("Beads", "Sample (sorted)"),
+  ylab = "Bead count",
+  ylim,
+  ...
+)
 }
 \arguments{
 \item{bead_count}{1) a \code{data.frame} of bead counts having sample IDs at

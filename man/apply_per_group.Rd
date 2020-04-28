@@ -5,11 +5,17 @@
 \alias{sapply_per_group}
 \title{Apply functions}
 \usage{
-apply_per_group(baf, FUN, ..., by_s = NULL, by_b = NULL,
-  passBAf = FALSE)
+apply_per_group(baf, FUN, ..., by_s = NULL, by_b = NULL, passBAf = FALSE)
 
-sapply_per_group(baf, FUN, ..., by_s = NULL, by_b = NULL,
-  b_simplify = T, s_simplify = b_simplify)
+sapply_per_group(
+  baf,
+  FUN,
+  ...,
+  by_s = NULL,
+  by_b = NULL,
+  b_simplify = T,
+  s_simplify = b_simplify
+)
 }
 \arguments{
 \item{baf}{an object of \code{\link{BAf-class}}}
@@ -57,7 +63,7 @@ apply_per_group(sba, median, na.rm= TRUE, by_s= c("plate", "sex"))
 # verify the first median computed by above line
 median(sba@.Data[with(sba@sinfo, plate == "1" & !is.na(sex) & sex == "female"), ])
 
-# compute coefficients of variation (CV) of \\code{MIX_1} wells
+# compute coefficients of variation (CV) of \code{MIX_1} wells
 apply_per_group(sba[sba@sinfo$cohort == "MIX_1", 1:5], FUN= function(j) {
     apply(j, 2, function(k) sd(k, na.rm= TRUE)/mean(k, na.rm= TRUE))
 })

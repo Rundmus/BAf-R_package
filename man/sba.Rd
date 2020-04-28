@@ -4,7 +4,9 @@
 \name{sba}
 \alias{sba}
 \title{data - sba}
-\format{an object of the class \code{\link{BAf-class}}}
+\format{
+an object of the class \code{\link{BAf-class}}
+}
 \usage{
 data(sba)
 }

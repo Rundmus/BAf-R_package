@@ -4,8 +4,14 @@
 \alias{plateLayout.SBA}
 \title{Design plate layout}
 \usage{
-plateLayout.SBA(sinfo, cat_var = NULL, qty_var = NULL,
-  nNull_per_96 = 2, null_var = NULL, plate_nr = NULL)
+plateLayout.SBA(
+  sinfo,
+  cat_var = NULL,
+  qty_var = NULL,
+  nNull_per_96 = 2,
+  null_var = NULL,
+  plate_nr = NULL
+)
 }
 \arguments{
 \item{sinfo}{a data frame that includes information about samples}

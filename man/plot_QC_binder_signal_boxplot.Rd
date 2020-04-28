@@ -5,14 +5,25 @@
 \alias{plot_QC_binder_signal_boxplot.SBA}
 \title{Signal distribution across binders}
 \usage{
-plot_QC_binder_signal_boxplot(baf, color_tbl_b = NULL,
-  main = deparse(substitute(baf)), xlab = "Binders",
-  ylab = "Signal Intensity", guide_line = TRUE, ...)
+plot_QC_binder_signal_boxplot(
+  baf,
+  color_tbl_b = NULL,
+  main = deparse(substitute(baf)),
+  xlab = "Binders",
+  ylab = "Signal Intensity",
+  guide_line = TRUE,
+  ...
+)
 
-plot_QC_binder_signal_boxplot.SBA(baf,
+plot_QC_binder_signal_boxplot.SBA(
+  baf,
   color_tbl_b = default_color_SBA_bead(T),
   main = paste(unique(batch(baf, "binder")), collapse = ", "),
-  xlab = "Beads", ylab = "Raw MFI", guide_line = TRUE, ...)
+  xlab = "Beads",
+  ylab = "Raw MFI",
+  guide_line = TRUE,
+  ...
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

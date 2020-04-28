@@ -4,8 +4,15 @@
 \alias{combine_repeats}
 \title{Function to combine repeated measures}
 \usage{
-combine_repeats(baf, rep_binder, rm_grp_rep_binder = T, center = T,
-  scale = F, FUN = function(x) mean(x, na.rm = T), ...)
+combine_repeats(
+  baf,
+  rep_binder,
+  rm_grp_rep_binder = T,
+  center = T,
+  scale = F,
+  FUN = function(x) mean(x, na.rm = T),
+  ...
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

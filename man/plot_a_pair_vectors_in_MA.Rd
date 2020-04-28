@@ -4,9 +4,19 @@
 \alias{plot_a_pair_vectors_in_MA}
 \title{MA-plot with coloring by group}
 \usage{
-plot_a_pair_vectors_in_MA(x1, x2, grp_id,
-  x1name = deparse(substitute(x1)), x2name = deparse(substitute(x2)),
-  log = TRUE, main, xlab, ylab, ..., legend_arg)
+plot_a_pair_vectors_in_MA(
+  x1,
+  x2,
+  grp_id,
+  x1name = deparse(substitute(x1)),
+  x2name = deparse(substitute(x2)),
+  log = TRUE,
+  main,
+  xlab,
+  ylab,
+  ...,
+  legend_arg
+)
 }
 \arguments{
 \item{x1, x2}{the first and second vectors to show}

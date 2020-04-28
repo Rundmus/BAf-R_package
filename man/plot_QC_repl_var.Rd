@@ -4,11 +4,21 @@
 \alias{plot_QC_repl_var}
 \title{Replicates variation plot}
 \usage{
-plot_QC_repl_var(baf, i_repl = 1:nrow(baf), by_s = batch_colname(baf,
-  "sample"), varFUN = function(x) {     sd(x, na.rm = T)/mean(x, na.rm =
-  T) }, col_lines = palette(), main = deparse(substitute(baf)),
-  xlab = "Coef. of var.", ylab = "Density", xlim = c(0, 0.5),
-  ylim = NULL, lty = c("solid", "dashed"), lwd = c(2, 1), ...)
+plot_QC_repl_var(
+  baf,
+  i_repl = 1:nrow(baf),
+  by_s = batch_colname(baf, "sample"),
+  varFUN = function(x) {     sd(x, na.rm = T)/mean(x, na.rm = T) },
+  col_lines = palette(),
+  main = deparse(substitute(baf)),
+  xlab = "Coef. of var.",
+  ylab = "Density",
+  xlim = c(0, 0.5),
+  ylim = NULL,
+  lty = c("solid", "dashed"),
+  lwd = c(2, 1),
+  ...
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

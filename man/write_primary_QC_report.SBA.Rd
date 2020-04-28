@@ -4,14 +4,19 @@
 \alias{write_primary_QC_report.SBA}
 \title{Write primary QC report}
 \usage{
-write_primary_QC_report.SBA(baf, bead_count = NULL,
+write_primary_QC_report.SBA(
+  baf,
+  bead_count = NULL,
   sample_order = order(batch(baf, "sample")),
   file = "primary_QC_report.html",
   title = paste("Primary QC report of", deparse(substitute(baf))),
-  author = "Mun-Gwan", date = Sys.Date(), rm_Rmd = T,
+  author = "Mun-Gwan",
+  date = Sys.Date(),
+  rm_Rmd = T,
   color_tbl_b = default_color_SBA_bead(T),
   color_tbl_s = default_color_SBA_ctrl_samples(sid(baf)),
-  lowbound_mfi = 100)
+  lowbound_mfi = 100
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}} that contains SBA data}

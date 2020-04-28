@@ -4,8 +4,7 @@
 \alias{.boxplot_color_tbl}
 \title{boxplot using color table}
 \usage{
-.boxplot_color_tbl(x, ids, color_tbl, grep = FALSE, main, xlab, ylab,
-  ...)
+.boxplot_color_tbl(x, ids, color_tbl, grep = FALSE, main, xlab, ylab, ...)
 }
 \arguments{
 \item{x}{a matrix}

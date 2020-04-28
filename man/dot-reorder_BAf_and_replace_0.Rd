@@ -4,8 +4,11 @@
 \alias{.reorder_BAf_and_replace_0}
 \title{reorder sample and replace 0}
 \usage{
-.reorder_BAf_and_replace_0(baf, sample_order = order(batch(baf,
-  "sample")), show_count_of_0 = FALSE)
+.reorder_BAf_and_replace_0(
+  baf,
+  sample_order = order(batch(baf, "sample")),
+  show_count_of_0 = FALSE
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

@@ -4,10 +4,19 @@
 \alias{plot_a_pair_vectors}
 \title{Plot to compare a pair of vectors}
 \usage{
-plot_a_pair_vectors(x, y, grp_id, square = TRUE, log = "xy",
+plot_a_pair_vectors(
+  x,
+  y,
+  grp_id,
+  square = TRUE,
+  log = "xy",
   main = paste("Scatter plot of", xlab, "&", ylab),
-  xlab = deparse(substitute(x)), ylab = deparse(substitute(y)),
-  col_ea_grp, ..., legend_arg = list(x = "bottomright"))
+  xlab = deparse(substitute(x)),
+  ylab = deparse(substitute(y)),
+  col_ea_grp,
+  ...,
+  legend_arg = list(x = "bottomright")
+)
 }
 \arguments{
 \item{x}{a vector of numerical values}

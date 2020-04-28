@@ -3,10 +3,13 @@
 \name{cbind_rbind}
 \alias{cbind_rbind}
 \alias{cbind.BAf}
+\alias{cbind_BAf}
 \alias{rbind.BAf}
 \title{Combine BAf objects by Rows or Columns}
 \usage{
 \method{cbind}{BAf}(..., deparse.level = 1)
+
+cbind_BAf(...)
 
 \method{rbind}{BAf}(..., deparse.level = 1)
 }

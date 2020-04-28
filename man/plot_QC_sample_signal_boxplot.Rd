@@ -5,14 +5,25 @@
 \alias{plot_QC_sample_signal_boxplot.SBA}
 \title{Signal distribution across samples}
 \usage{
-plot_QC_sample_signal_boxplot(baf, sample_order = order(batch(baf,
-  "sample")), color_tbl_s = NULL, main = deparse(substitute(baf)),
-  xlab = "Sample (sorted)", ylab = "Signal Intensity", ...)
+plot_QC_sample_signal_boxplot(
+  baf,
+  sample_order = order(batch(baf, "sample")),
+  color_tbl_s = NULL,
+  main = deparse(substitute(baf)),
+  xlab = "Sample (sorted)",
+  ylab = "Signal Intensity",
+  ...
+)
 
-plot_QC_sample_signal_boxplot.SBA(baf, sample_order = order(batch(baf,
-  "sample")), color_tbl_s = default_color_SBA_ctrl_samples(sid(baf)),
+plot_QC_sample_signal_boxplot.SBA(
+  baf,
+  sample_order = order(batch(baf, "sample")),
+  color_tbl_s = default_color_SBA_ctrl_samples(sid(baf)),
   main = paste(unique(batch(baf, "binder")), collapse = ", "),
-  xlab = "Sample (sorted)", ylab = "Raw MFI", ...)
+  xlab = "Sample (sorted)",
+  ylab = "Raw MFI",
+  ...
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

@@ -4,9 +4,13 @@
 \alias{normn_MA}
 \title{Multi-dimensional MA normalization for plate effect}
 \usage{
-normn_MA(baf, expGroupVar = batch_colname(baf, "sample"),
-  represent_FUN = function(x) mean(x, na.rm = T), fitting_FUN = NULL,
-  isLog = TRUE)
+normn_MA(
+  baf,
+  expGroupVar = batch_colname(baf, "sample"),
+  represent_FUN = function(x) mean(x, na.rm = T),
+  fitting_FUN = NULL,
+  isLog = TRUE
+)
 }
 \arguments{
 \item{baf}{a \code{\link{BAf-class}} object}

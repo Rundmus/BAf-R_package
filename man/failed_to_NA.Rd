@@ -4,8 +4,14 @@
 \alias{failed_to_NA}
 \title{Failed sample/binder to NA}
 \usage{
-failed_to_NA(baf, wise = c("sinfo", "binder"), fail_flag = "fail_flag",
-  failMark = "failed", show_count = TRUE, by)
+failed_to_NA(
+  baf,
+  wise = c("sinfo", "binder"),
+  fail_flag = "fail_flag",
+  failMark = "failed",
+  show_count = TRUE,
+  by
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

@@ -5,18 +5,35 @@
 \alias{write_textfiles_to_share.SBA}
 \title{Text files to share}
 \usage{
-write_textfiles_to_share(baf, prefix = "BAf", suffix = paste0("(",
-  Sys.Date(), ")"), path = "_sent", fn_data = "-data",
-  fn_sample = NULL, fn_binder = NULL, incl_sample_i = c("id"),
-  incl_binder_i = c("id"), fix_sid = c(), quote = TRUE,
-  sep = "\\t")
+write_textfiles_to_share(
+  baf,
+  prefix = "BAf",
+  suffix = paste0("(", Sys.Date(), ")"),
+  path = "_sent",
+  fn_data = "-data",
+  fn_sample = NULL,
+  fn_binder = NULL,
+  incl_sample_i = c("id"),
+  incl_binder_i = c("id"),
+  fix_sid = c(),
+  quote = TRUE,
+  sep = "\\t"
+)
 
-write_textfiles_to_share.SBA(baf, prefix = "SBA", suffix = paste0("(",
-  Sys.Date(), ")"), path = "_sent", fn_data = "-data",
-  fn_sample = NULL, fn_binder = NULL, incl_sample_i = c("id"),
+write_textfiles_to_share.SBA(
+  baf,
+  prefix = "SBA",
+  suffix = paste0("(", Sys.Date(), ")"),
+  path = "_sent",
+  fn_data = "-data",
+  fn_sample = NULL,
+  fn_binder = NULL,
+  incl_sample_i = c("id"),
   incl_binder_i = c("id", "gene_name", "gene_description", "ensg_id"),
   fix_sid = c(NEG_CTRL = "EMPTY-0001", REPEATED_SAMPLE = "MIX_1-0001"),
-  quote = TRUE, sep = "\\t")
+  quote = TRUE,
+  sep = "\\t"
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}, of which the data will

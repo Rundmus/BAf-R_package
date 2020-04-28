@@ -4,10 +4,22 @@
 \alias{read_FlexMAP3D_csv}
 \title{Generate BAf object parsing raw file from FLEXMAP3D}
 \usage{
-read_FlexMAP3D_csv(file, assayid, sinfo, bead, sample_batch_c = "plate",
-  sbaid, bead_count_as_failed = 20, bead_count_alert = 35,
-  reading_order = 1:nrow(sinfo), QC_plot = FALSE,
-  path_QC = "../output/QC", i_neg_ctrl_sample, row_var, col_var)
+read_FlexMAP3D_csv(
+  file,
+  assayid,
+  sinfo,
+  bead,
+  sample_batch_c = "plate",
+  sbaid,
+  bead_count_as_failed = 20,
+  bead_count_alert = 35,
+  reading_order = 1:nrow(sinfo),
+  QC_plot = FALSE,
+  path_QC = "../output/QC",
+  i_neg_ctrl_sample,
+  row_var,
+  col_var
+)
 }
 \arguments{
 \item{file}{name of a file from FLEXMAP3D}

@@ -4,8 +4,10 @@
 \alias{default_color_SBA_ctrl_samples}
 \title{Default colors of control samples}
 \usage{
-default_color_SBA_ctrl_samples(sampleid, rpt_id = sampleid[grep("^MIX_1",
-  sampleid)])
+default_color_SBA_ctrl_samples(
+  sampleid,
+  rpt_id = sampleid[grep("^MIX_1", sampleid)]
+)
 }
 \arguments{
 \item{sampleid}{a vector of sample IDs}

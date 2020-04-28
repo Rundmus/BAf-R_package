@@ -4,10 +4,17 @@
 \alias{plot_QC_binder_corr_hist}
 \title{Correlation with a binder}
 \usage{
-plot_QC_binder_corr_hist(baf, b_id, incl = rep(T, ncol(baf)),
-  method = c("spearman", "pearson", "kendall"), use = "complete.obs",
-  xlab = paste("Corr. with", b_id), main = paste("Histogram of", xlab),
-  ..., show_count = TRUE)
+plot_QC_binder_corr_hist(
+  baf,
+  b_id,
+  incl = rep(T, ncol(baf)),
+  method = c("spearman", "pearson", "kendall"),
+  use = "complete.obs",
+  xlab = paste("Corr. with", b_id),
+  main = paste("Histogram of", xlab),
+  ...,
+  show_count = TRUE
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}}}

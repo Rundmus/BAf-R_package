@@ -4,9 +4,16 @@
 \alias{read_LIMS_SBA_files}
 \title{Parse a set of constituent files exported from LIMS for a single project.}
 \usage{
-read_LIMS_SBA_files(SLid, path, ..., QC_plot = FALSE,
-  QC_report = FALSE, author = "Mun-Gwan", path_QC = "../QC",
-  lowbound_mfi = 100)
+read_LIMS_SBA_files(
+  SLid,
+  path,
+  ...,
+  QC_plot = FALSE,
+  QC_report = FALSE,
+  author = "Mun-Gwan",
+  path_QC = "../QC",
+  lowbound_mfi = 100
+)
 }
 \arguments{
 \item{SLid}{the sample layout ID used in LIMS, e.g. "SL0001". Currently it is

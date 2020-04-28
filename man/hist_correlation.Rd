@@ -4,8 +4,13 @@
 \alias{hist_correlation}
 \title{Histogram of correlation}
 \usage{
-hist_correlation(baf, rep_binder, method = c("spearman", "pearson",
-  "kendall"), use = "complete.obs", ...)
+hist_correlation(
+  baf,
+  rep_binder,
+  method = c("spearman", "pearson", "kendall"),
+  use = "complete.obs",
+  ...
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}} or a matrix}

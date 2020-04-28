@@ -4,13 +4,18 @@
 \alias{ask_save.plot_QC.SBA}
 \title{plot for basic QC of SBA data}
 \usage{
-ask_save.plot_QC.SBA(baf, prefix = deparse(substitute(baf)),
-  path = "../output/QC", bead_count = NULL,
+ask_save.plot_QC.SBA(
+  baf,
+  prefix = deparse(substitute(baf)),
+  path = "../output/QC",
+  bead_count = NULL,
   sample_order = order(batch(baf, "sample")),
   color_tbl_b = default_color_SBA_bead(T),
   color_tbl_s = default_color_SBA_ctrl_samples(sid(baf)),
   main = paste(unique(batch(baf, "binder")), collapse = ", "),
-  ylab_signal = "Raw MFI", guide_line = TRUE)
+  ylab_signal = "Raw MFI",
+  guide_line = TRUE
+)
 }
 \arguments{
 \item{baf}{an object of the \code{\link{BAf-class}} that contains SBA data}
