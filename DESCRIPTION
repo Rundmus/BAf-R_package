@@ -1,7 +1,7 @@
 Package: BAf
 Title: Binder Array data hanlding package in facility
-Version: 1.611
-Date: 2019-01-16
+Version: 1.612
+Date: 2020-04-28
 Author: Mun-Gwan Hong
 Author@R: c(person("Mun-Gwan", "Developer", email= "mun-gwan.hong@scilifelab.se"))
 Maintainer: Mun-Gwan Hong <mun-gwan.hong@scilifelab.se>
@@ -70,4 +70,4 @@ Collate:
     'well_position.R'
     'write_primary_QC_report.SBA.R'
     'write_textfiles_to_share.R'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
