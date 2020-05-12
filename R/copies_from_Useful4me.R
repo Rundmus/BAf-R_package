@@ -30,7 +30,6 @@
 #' 
 #' @author Mun-Gwan Hong, \email{mun-gwan.hong@scilifelab.se}
 #' @seealso \code{\link{boxplot}}
-#' @include overwrite_par.R
 #' @importFrom Useful2me overwrite_par
 # -----------------------------------------------------------------------------#
 # created  : 2011-09-13 by Mun-Gwan

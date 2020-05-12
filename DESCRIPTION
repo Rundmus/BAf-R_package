@@ -45,6 +45,7 @@ Collate:
     'by.divideBy.R'
     'by.meanBy.R'
     'clean.failed_to_NA.R'
+    'copies_from_Useful4me.R'
     'data_sba.R'
     'default_colors_s_b.R'
     'norm_AbsPQN.R'
