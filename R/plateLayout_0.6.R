@@ -56,7 +56,8 @@
 #' head(X)
 #' 
 #' @author Mun-Gwan Hong <\email{mun-gwan.hong@scilifelab.se}>
-#' @importFrom Useful4me boxplot_nEle shuffle
+#' @include copies_from_Useful4me.R
+#' @importFrom Useful2me shuffle
 #' @export
 # -----------------------------------------------------------------------------#
 # created  : 2012-01-24 by Mun-Gwan
@@ -404,11 +405,11 @@ plateLayout.SBA <- function(sinfo,
             boxplot(Xs[[qV]] ~ Xs$plate, ylim = yr)
           } else {
             if(length(Xs[[qV]]) <= length(unique(Xs$plate)) * 2) {
-              Useful4me::boxplot_nEle(Xs[[qV]] ~ Xs$plate, 
+              boxplot_nEle(Xs[[qV]] ~ Xs$plate, 
                                       ylim = yr, 
                                       test = "")
             } else {
-              Useful4me::boxplot_nEle(Xs[[qV]] ~ Xs$plate, 
+              boxplot_nEle(Xs[[qV]] ~ Xs$plate, 
                                       ylim = yr, 
                                       test = "aov")
             }

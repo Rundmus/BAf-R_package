@@ -16,7 +16,7 @@
 #' \code{\link{cor}}
 #' 
 #' @author Mun-Gwan Hong <\email{mun-gwan.hong@scilifelab.se}>
-#' @importFrom Useful4me overwrite_par toupper_1st_char shuffle
+#' @importFrom Useful2me overwrite_par toupper_1st_char shuffle
 #' @export
 # -----------------------------------------------------------------------------#
 # created  : 2016-10-18 by Mun-Gwan

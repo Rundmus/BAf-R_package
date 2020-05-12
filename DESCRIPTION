@@ -10,7 +10,7 @@ Imports:
 	purrr,
 	readxl,
 	MDimNormn,
-	Useful4me,
+	Useful2me,
 	whisker,
 	methods,
 	rrcov,

@@ -161,7 +161,7 @@ cbind_BAf <- function(...) {
 #' summary(sba3)
 #' 
 #' @export
-#' @importFrom Useful4me combine_multi_elements
+#' @importFrom Useful2me combine_multi_elements
 #' @rdname cbind_rbind
 # -----------------------------------------------------------------------------#
 # modified : 

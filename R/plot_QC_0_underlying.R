@@ -125,7 +125,7 @@ farg <- function(x,
   # foreground color
   fg_col <- farg(ids, color_tbl$reg, color_tbl$col, grep = grep)
   
-  col0 <- Useful4me::lighten_color(fg_col, 70)
+  col0 <- Useful2me::lighten_color(fg_col, 70)
   
   boxplot(x, log= "y", cex= 0.5, 
           outcol= fg_col, boxcol= fg_col, 

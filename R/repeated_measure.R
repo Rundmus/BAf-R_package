@@ -10,7 +10,7 @@
 #' @return \code{\link{BAf-class}} object in landscape form
 #' 
 #' @author Mun-Gwan Hong <\email{mun-gwan.hong@scilifelab.se}>
-#' @importFrom Useful4me combine_multi_elements
+#' @importFrom Useful2me combine_multi_elements
 #' @export
 # -----------------------------------------------------------------------------#
 # created  : 2016-10-18 by Mun-Gwan

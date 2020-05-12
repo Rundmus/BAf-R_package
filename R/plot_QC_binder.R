@@ -51,7 +51,7 @@ plot_QC_binder_signal_boxplot <-
     ##  Guide lines to show the levels of control binders
     if(!is.null(c_l$used_col) && nrow(c_l$used_col) > 0 && guide_line) {
       cTbl <- c_l$used_col %>%
-        mutate(light= Useful4me::lighten_color(col, 100))
+        mutate(light= Useful2me::lighten_color(col, 100))
       
       for(ii in 1:nrow(cTbl)) {
         sX(baf)[, c_l$fg_col == cTbl$col[ii], drop= F] %>% 

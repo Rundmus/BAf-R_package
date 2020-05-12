@@ -30,7 +30,7 @@
 #' @author Mun-Gwan Hong <\email{mun-gwan.hong@scilifelab.se}>
 #' 
 #' @include plot_QC_0_underlying.R
-#' @importFrom Useful4me toupper_1st_char
+#' @importFrom Useful2me toupper_1st_char
 #' @export
 # -----------------------------------------------------------------------------#
 # created  : 2014-11-24 by Mun-Gwan

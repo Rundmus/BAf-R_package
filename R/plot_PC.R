@@ -91,7 +91,7 @@ setMethod(
 #' @param legend_arg a list of parameters to be used in adding a legend. If
 #'   NULL, skip to add legend
 #' 
-#' @importFrom Useful4me overwrite_par
+#' @importFrom Useful2me overwrite_par
 #' @export
 # -----------------------------------------------------------------------------#
 setMethod(
@@ -156,7 +156,7 @@ setMethod(
         pch    = lg$pch.1,
         bty    = "n"
       ) %>% 
-        Useful4me::overwrite_par(new_par= legend_arg) %>% 
+        Useful2me::overwrite_par(new_par= legend_arg) %>% 
         do.call("legend", .)
     }
     

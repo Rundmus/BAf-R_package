@@ -27,7 +27,7 @@
 #'
 #' @author Mun-Gwan Hong <\email{mun-gwan.hong@scilifelab.se}>
 #' @export
-#' @importFrom Useful4me combine_multi_elements
+#' @importFrom Useful2me combine_multi_elements
 # -----------------------------------------------------------------------------#
 # created  : 2016-10-19 by Mun-Gwan
 # modified : 2017-08-22 by Mun-Gwan : to adapt to BAf-class
@@ -96,7 +96,7 @@ combine_repeats <-
         iRmCol <- iRmCol[iRmCol != 0]
         runs <- if(length(iRmCol) == 0) runs else runs[, -c(iRmCol)]
       }
-      runs %>% summarise_all(Useful4me::combine_multi_elements)
+      runs %>% summarise_all(Useful2me::combine_multi_elements)
     }) %>% 
       do.call("rbind", .)
     
@@ -120,7 +120,7 @@ combine_repeats <-
       lapply(levels(batch_b_merge), FUN= function(ii) {
         tmp <- batch_b[, batch_b_merge == ii][, 1]
         sapply(1:nrow(eA), function(jj) {
-          Useful4me::combine_multi_elements(unlist(eA[jj, unique(tmp)]))
+          Useful2me::combine_multi_elements(unlist(eA[jj, unique(tmp)]))
         })
       }) %>%
         as.data.frame() %>%
@@ -131,7 +131,7 @@ combine_repeats <-
     ##  @assy_b
     assy_b_new <- lapply(sA(baf, "binder"), function(eA) {
       lapply(i_by_b, function(ii) {
-        summarise_all(eA[ii, ], Useful4me::combine_multi_elements)
+        summarise_all(eA[ii, ], Useful2me::combine_multi_elements)
       }) %>% 
         do.call("rbind", .)
     })
